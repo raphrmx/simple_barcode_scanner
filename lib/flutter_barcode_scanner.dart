@@ -35,6 +35,7 @@ class FlutterBarcodeScanner {
     int? delayMillis,
     String cameraFace,
     ScanFormat scanFormat,
+      bool? flip,
   ) async {
     if (cancelButtonText.isEmpty) {
       cancelButtonText = 'Cancel';
@@ -75,6 +76,7 @@ class FlutterBarcodeScanner {
     int? delayMillis,
     String cameraFace,
     ScanFormat scanFormat,
+      bool? flip,
   ) {
     if (cancelButtonText.isEmpty) {
       cancelButtonText = 'Cancel';

@@ -103,6 +103,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       widget.delayMillis,
       widget.cameraFace.name.toUpperCase(),
       widget.scanFormat,
+      widget.flip,
     );
     widget.onScanned(barcode);
   }
@@ -116,6 +117,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       widget.delayMillis,
       widget.cameraFace.name.toUpperCase(),
       widget.scanFormat,
+      widget.flip,
     )?.listen((barcode) {
       if (barcode != null) {
         barcode == kCancelValue ? widget.onClose?.call() : widget.onScanned(barcode);
