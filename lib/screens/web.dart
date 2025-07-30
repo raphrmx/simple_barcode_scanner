@@ -22,6 +22,7 @@ class BarcodeScanner extends StatelessWidget {
   final Widget? child;
   final BarcodeAppBar? barcodeAppBar;
   final int? delayMillis;
+  final bool? flip;
   final Function? onClose;
   final ScanFormat scanFormat;
 
@@ -39,6 +40,7 @@ class BarcodeScanner extends StatelessWidget {
     this.barcodeAppBar,
     this.delayMillis,
     this.onClose,
+    this.flip,
     this.scanFormat = ScanFormat.ALL_FORMATS,
   });
 
@@ -50,8 +52,8 @@ class BarcodeScanner extends StatelessWidget {
     final iframe = html.HTMLIFrameElement()
       ..src = PackageConstant.barcodeFileWebPath
       ..style.border = 'none'
-      ..style.width = '100%'
-      ..style.height = '100%'
+      ..style.width = '640px'
+      ..style.height = '480px'
       ..onLoad.listen((event) async {
         /// Barcode listener on success barcode scanned
         html.window.onMessage.listen((event) {
@@ -66,28 +68,32 @@ class BarcodeScanner extends StatelessWidget {
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry
         .registerViewFactory(createdViewId, (int viewId) => iframe);
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    //final width = MediaQuery.of(context).size.width;
+    //final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: height,
-              width: width,
-              child: HtmlElementView(
-                viewType: createdViewId,
+      body: Stack(
+        children: [
+          Center(
+            child: SizedBox(
+              height: 480,
+              width: 640,
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.identity()..rotateY(flip == true ? 3.1416 : 0),
+                child: HtmlElementView(
+                  viewType: createdViewId,
+                ),
               ),
             ),
-            if (child != null) child!,
-          ],
-        ),
+          ),
+          if (child != null) child!,
+        ],
       ),
     );
   }
 
-  _buildAppBar(BuildContext context) {
+  AppBar? _buildAppBar(BuildContext context) {
     if (appBarTitle == null && barcodeAppBar == null) {
       return null;
     }
@@ -128,6 +134,7 @@ class BarcodeScannerView extends StatelessWidget {
   final Function(String)? onScanned;
   final Widget? child;
   final int? delayMillis;
+  final bool? flip;
   final Function? onClose;
   final bool continuous;
   final double? scannerWidth;
@@ -143,6 +150,7 @@ class BarcodeScannerView extends StatelessWidget {
       this.continuous = false,
       this.child,
       this.delayMillis,
+      this.flip,
       this.onClose,
       this.scanFormat = ScanFormat.ALL_FORMATS,
       required this.onBarcodeViewCreated});

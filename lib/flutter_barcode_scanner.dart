@@ -50,6 +50,8 @@ class FlutterBarcodeScanner {
       'delayMillis': delayMillis ?? 0,
       'cameraFacingText': cameraFace,
       'scanFormat': scanFormat.name,
+      'scannerWidth': 280,
+      'scannerHeight': 280,
     };
 
     /// Get barcode scan result
@@ -88,6 +90,8 @@ class FlutterBarcodeScanner {
       'delayMillis': delayMillis ?? 0,
       'cameraFacingText': cameraFace,
       'scanFormat': scanFormat.name,
+      'scannerWidth': 280,
+      'scannerHeight': 280,
     };
 
     // Invoke method to open camera, and then create an event channel which will

@@ -15,6 +15,7 @@ class BarcodeScanner extends StatelessWidget {
   final Widget? child;
   final BarcodeAppBar? barcodeAppBar;
   final int? delayMillis;
+  final bool? flip;
   final Function? onClose;
   final ScanFormat scanFormat;
   const BarcodeScanner({
@@ -30,6 +31,7 @@ class BarcodeScanner extends StatelessWidget {
     this.centerTitle,
     this.barcodeAppBar,
     this.delayMillis,
+    this.flip,
     this.onClose,
     this.scanFormat = ScanFormat.ALL_FORMATS,
   });
@@ -50,6 +52,7 @@ class BarcodeScannerView extends StatelessWidget {
   final Function(String)? onScanned;
   final Widget? child;
   final int? delayMillis;
+  final bool? flip;
   final Function? onClose;
   final bool continuous;
   final double? scannerWidth;
@@ -64,6 +67,7 @@ class BarcodeScannerView extends StatelessWidget {
       required this.onScanned,
       this.continuous = false,
       this.child,
+      this.flip,
       this.delayMillis,
       this.onClose,
       this.scanFormat = ScanFormat.ALL_FORMATS,

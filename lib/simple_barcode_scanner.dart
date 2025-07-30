@@ -24,6 +24,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
 
   ///Enter enum scanType, It can be BARCODE, QR, DEFAULT
   final ScanType scanType;
+  final bool? flip;
 
   ///AppBar Title
 
@@ -67,6 +68,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       this.lineColor = "#ff6666",
       this.cancelButtonText = "Cancel",
       this.isShowFlashIcon = false,
+      this.flip = false,
       this.scanType = ScanType.barcode,
       @Deprecated(
           'Use BarcodeAppBar instead. This field will be removed in future versions.')
@@ -96,6 +98,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       centerTitle: centerTitle,
       barcodeAppBar: barcodeAppBar,
       delayMillis: delayMillis,
+      flip: flip,
       child: child,
       onScanned: (res) {
         if (context.mounted) Navigator.pop(context, res);
@@ -150,6 +153,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
 
   /// Delay in milliseconds between consecutive scans.
   final int? delayMillis;
+  final bool? flip;
 
   /// Optional widget to display in the scanner interface.
   final Widget? child;
@@ -178,6 +182,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
       this.onScanned,
       this.continuous = false,
       this.onClose,
+      this.flip,
       this.scanFormat = ScanFormat.ALL_FORMATS,
       required this.onBarcodeViewCreated});
 
@@ -207,6 +212,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
     ScanType scanType = ScanType.barcode,
     CameraFace cameraFace = CameraFace.back,
     BarcodeAppBar? barcodeAppBar,
+    bool? flip,
     int? delayMillis,
     Widget? child,
     ScanFormat scanFormat = ScanFormat.ALL_FORMATS,
@@ -223,6 +229,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
           barcodeAppBar: barcodeAppBar,
           delayMillis: delayMillis,
           scanFormat: scanFormat,
+          flip: flip,
           onScanned: (res) => Navigator.pop(context, res),
           child: child,
         ),
@@ -257,6 +264,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
     CameraFace cameraFace = CameraFace.back,
     BarcodeAppBar? barcodeAppBar,
     int? delayMillis,
+    bool? flip,
     ScanFormat scanFormat = ScanFormat.ALL_FORMATS,
     Widget? child,
   }) {
@@ -275,6 +283,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
           barcodeAppBar: barcodeAppBar,
           delayMillis: delayMillis,
           scanFormat: scanFormat,
+          flip: flip,
           onScanned: (res) {
             streamController.add(res);
             // Don't pop the navigator - keep scanning
@@ -305,6 +314,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
       onScanned: onScanned,
       continuous: continuous,
       onClose: onClose,
+      flip: flip,
       onBarcodeViewCreated: onBarcodeViewCreated,
       scanFormat: scanFormat,
       child: child,

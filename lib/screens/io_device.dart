@@ -12,7 +12,7 @@ import '../constant.dart';
 import '../flutter_barcode_scanner.dart';
 
 /// Barcode scanner for mobile and desktop devices
-class BarcodeScanner extends StatelessWidget {
+class BarcodeScanner extends StatefulWidget {
   final String lineColor;
   final String cancelButtonText;
   final bool isShowFlashIcon;
@@ -24,6 +24,7 @@ class BarcodeScanner extends StatelessWidget {
   final Widget? child;
   final BarcodeAppBar? barcodeAppBar;
   final int? delayMillis;
+  final bool? flip;
   final Function? onClose;
   final ScanFormat scanFormat;
 
@@ -41,29 +42,36 @@ class BarcodeScanner extends StatelessWidget {
     this.barcodeAppBar,
     this.delayMillis,
     this.onClose,
+    this.flip,
     this.scanFormat = ScanFormat.ALL_FORMATS,
   });
 
+  @override
+  State<BarcodeScanner> createState() => _BarcodeScannerState();
+}
+
+class _BarcodeScannerState extends State<BarcodeScanner> {
   @override
   Widget build(BuildContext context) {
     if (Platform.isWindows) {
       ///Get Window barcode Scanner UI
       return WindowBarcodeScanner(
-        lineColor: lineColor,
-        cancelButtonText: cancelButtonText,
-        isShowFlashIcon: isShowFlashIcon,
-        scanType: scanType,
-        onScanned: onScanned,
-        appBarTitle: appBarTitle,
-        centerTitle: centerTitle,
-        delayMillis: delayMillis,
+        lineColor: widget.lineColor,
+        cancelButtonText: widget.cancelButtonText,
+        isShowFlashIcon: widget.isShowFlashIcon,
+        scanType: widget.scanType,
+        onScanned: widget.onScanned,
+        appBarTitle: widget.appBarTitle,
+        centerTitle: widget.centerTitle,
+        delayMillis: widget.delayMillis,
+        flip: widget.flip,
       );
     } else {
       /// Scan Android and ios barcode scanner with flutter_barcode_scanner
       /// If onClose is not null then stream barcode otherwise scan barcode
       /// Scan barcode for mobile devices
       ScanMode scanMode;
-      switch (scanType) {
+      switch (widget.scanType) {
         case ScanType.barcode:
           scanMode = ScanMode.BARCODE;
           break;
@@ -74,7 +82,7 @@ class BarcodeScanner extends StatelessWidget {
           scanMode = ScanMode.DEFAULT;
           break;
       }
-      onClose != null
+      widget.onClose != null
           ? _streamBarcodeForMobileAndTabDevices(scanMode)
           : _scanBarcodeForMobileAndTabDevices(scanMode);
 
@@ -86,31 +94,31 @@ class BarcodeScanner extends StatelessWidget {
     }
   }
 
-  _scanBarcodeForMobileAndTabDevices(ScanMode scanMode) async {
+  Future<void> _scanBarcodeForMobileAndTabDevices(ScanMode scanMode) async {
     String barcode = await FlutterBarcodeScanner.scanBarcode(
-      lineColor,
-      cancelButtonText,
-      isShowFlashIcon,
+      widget.lineColor,
+      widget.cancelButtonText,
+      widget.isShowFlashIcon,
       scanMode,
-      delayMillis,
-      cameraFace.name.toUpperCase(),
-      scanFormat,
+      widget.delayMillis,
+      widget.cameraFace.name.toUpperCase(),
+      widget.scanFormat,
     );
-    onScanned(barcode);
+    widget.onScanned(barcode);
   }
 
   void _streamBarcodeForMobileAndTabDevices(ScanMode scanMode) {
     FlutterBarcodeScanner.getBarcodeStreamReceiver(
-      lineColor,
-      cancelButtonText,
-      isShowFlashIcon,
+      widget.lineColor,
+      widget.cancelButtonText,
+      widget.isShowFlashIcon,
       scanMode,
-      delayMillis,
-      cameraFace.name.toUpperCase(),
-      scanFormat,
+      widget.delayMillis,
+      widget.cameraFace.name.toUpperCase(),
+      widget.scanFormat,
     )?.listen((barcode) {
       if (barcode != null) {
-        barcode == kCancelValue ? onClose?.call() : onScanned(barcode);
+        barcode == kCancelValue ? widget.onClose?.call() : widget.onScanned(barcode);
       }
     });
   }
@@ -131,6 +139,7 @@ class BarcodeScannerView extends StatelessWidget {
   final Function(String)? onScanned;
   final Widget? child;
   final int? delayMillis;
+  final bool? flip;
   final Function? onClose;
   final bool continuous;
   final ScanFormat scanFormat;
@@ -144,6 +153,7 @@ class BarcodeScannerView extends StatelessWidget {
       this.continuous = false,
       this.child,
       this.delayMillis,
+      this.flip,
       this.onClose,
       this.scanFormat = ScanFormat.ALL_FORMATS,
       required this.onBarcodeViewCreated});
