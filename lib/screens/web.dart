@@ -52,8 +52,8 @@ class BarcodeScanner extends StatelessWidget {
     final iframe = html.HTMLIFrameElement()
       ..src = PackageConstant.barcodeFileWebPath
       ..style.border = 'none'
-      ..style.width = '640px'
-      ..style.height = '480px'
+      ..style.width = MediaQuery.of(context).size.width > 640 ? '640px' : '100%'
+      ..style.height = MediaQuery.of(context).size.height > 480 ? '480px' : '100%'
       ..onLoad.listen((event) async {
         /// Barcode listener on success barcode scanned
         html.window.onMessage.listen((event) {
@@ -76,8 +76,8 @@ class BarcodeScanner extends StatelessWidget {
         children: [
           Center(
             child: SizedBox(
-              height: 480,
-              width: 640,
+              width: MediaQuery.of(context).size.width > 640 ?  640 : MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width > 480 ?  480 : MediaQuery.of(context).size.height,
               child: Transform(
                 alignment: Alignment.center,
                 transform: Matrix4.identity()..rotateY(flip == true ? 3.1416 : 0),
