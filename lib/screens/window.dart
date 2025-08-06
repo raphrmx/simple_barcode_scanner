@@ -205,7 +205,7 @@ class _WindowBarcodeScannerState extends State<WindowBarcodeScanner> {
                 onPressed: () {
                   /// send close event to web-view
                   controller.postWebMessage(json.encode({"event": "close"}));
-                  controller.dispose();
+                  //controller.dispose();
                   Navigator.pop(context);
                 },
                 icon: widget.barcodeAppBar?.backButtonIcon ??

@@ -103,6 +103,9 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       onScanned: (res) {
         if (context.mounted) Navigator.pop(context, res);
       },
+      onClose: () {
+        if (context.mounted) Navigator.pop(context);
+      },
     );
   }
 }
